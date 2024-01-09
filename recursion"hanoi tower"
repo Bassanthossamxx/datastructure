@@ -1,0 +1,71 @@
+#include <iostream>
+using namespace std;
+
+void C()
+{
+    cout << "Hello, I am C\n";
+}
+
+void B()
+{
+    cout << "Hello, I am B\n";
+    C();
+}
+
+void A()
+{
+    cout << "Hello, I am function A\n";
+    B();
+}
+
+void message(int times)
+{
+    if (times > 0)
+    {
+        cout << "This is a recurive fumction\n\n";
+        message(times - 1);
+    }
+}
+
+int power(int x, int n)
+{
+    if (n == 1)
+        return x;
+    else
+        return x * power(x, n - 1);
+}
+
+long factorial(int n)
+{
+    if (n == 0)
+        return 1;
+    else
+        return n * factorial(n - 1);
+}
+
+void tower_of_hanoi(int n, char from_rod, char to_rod,
+                    char aux_rod)
+{
+    if (n == 0)
+    {
+        return;
+    }
+    tower_of_hanoi(n - 1, from_rod, aux_rod, to_rod);
+    cout << "Move disk " << n << " from rod " << from_rod
+         << " to rod " << to_rod << endl;
+    tower_of_hanoi(n - 1, aux_rod, to_rod, from_rod);
+}
+
+int main()
+{
+    A();
+    message(5);
+    cout << "\n\n"
+         << power(5, 2) << "\n\n";
+    cout << "\n\n"
+         << factorial(7) << "\n\n";
+
+    int N = 3;
+    tower_of_hanoi(N, 'A', 'C', 'B');
+    return 0;
+}
