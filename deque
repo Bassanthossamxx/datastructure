@@ -1,0 +1,152 @@
+#include <iostream>
+#define ll long long
+#define size 20
+using namespace std;
+class Deque
+{
+private:
+    int items[size];
+    int front, rear;
+
+public:
+    Deque()
+    {
+        front = -1;
+        rear = -1;
+    }
+    bool isFull()
+    {
+        return (front == (rear + 1) % size);
+    }
+
+    bool isEmpty()
+    {
+        return (front == -1);
+    }
+    // inserting
+    void insertRear(int x)
+    {
+        if (isFull())
+        {
+            cout << "Deque is overflow" << endl;
+            return;
+        }
+        if (isEmpty())
+            front = rear = 0;
+        else
+            rear = (rear + 1) % size;
+        items[rear] = x;
+    }
+
+    void insertFront(int xx)
+    {
+        if (isFull())
+        {
+            cout << "Deque is overflow" << endl;
+            return;
+        }
+
+        if (isEmpty())
+        {
+            front = rear = 0;
+        }
+        else
+        {
+            front = (front - 1 + size) % size;
+        }
+        items[front] = xx;
+    }
+    // remove :
+    int removeFront()
+    {
+        if (isEmpty())
+        {
+            cout << "Deque is underflow" << endl;
+            return 0;
+        }
+
+        int temp = items[front];
+        if (front == rear)
+        {
+            front = rear = -1;
+        }
+        else
+        {
+            front = (front + 1) % size;
+        }
+
+        return temp;
+    }
+    int removeRear()
+    {
+        if (isEmpty())
+        {
+            cout << "Deque is underflow" << endl;
+            return 0;
+        }
+        int temp = items[rear];
+        if (front == rear)
+            front = rear = -1;
+        else
+            rear = (rear - 1 + size) % size;
+        return temp;
+    }
+    void display()
+    {
+        if (isEmpty())
+        {
+            cout << "Deque is empty" << endl;
+            return;
+        }
+
+        cout << "Deque items are:" << endl;
+
+        for (int i = front; i != (rear + 1) % size; i = (i + 1) % size)
+        {
+            cout << items[i] << " ";
+        }
+
+        cout << endl;
+    }
+};
+int main()
+{
+    Deque dq;
+
+    cout << "Input restricted deque (add rear, remove rear & front):" << endl;
+    dq.insertRear(2);
+    dq.insertRear(3);
+    dq.insertRear(4);
+    dq.insertRear(5);
+    dq.insertFront(1);
+    cout << "Display after insert:" << endl;
+    dq.display();
+    dq.removeFront();
+    dq.removeRear();
+
+    cout << "Display after remove:" << endl;
+    dq.display();
+    cout << "----------------------------------------" << endl;
+
+    dq.removeFront();
+    dq.removeFront();
+    dq.removeFront();
+
+    cout << "Output restricted deque (remove front, add front & rear):" << endl;
+    dq.insertRear(1);
+    dq.insertFront(2);
+    dq.insertRear(3);
+    dq.insertFront(4);
+    dq.insertRear(5);
+
+    cout << "Display after insert:" << endl;
+    dq.display();
+
+    dq.removeFront();
+    dq.removeFront();
+
+    cout << "Display after remove:" << endl;
+    dq.display();
+    cout << "----------------------------------------" << endl;
+    return 0;
+}
