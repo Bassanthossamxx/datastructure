@@ -1,0 +1,167 @@
+#include <iostream>
+using namespace std;
+
+struct node
+{
+    int data;
+    node *next;
+    node(int data) : data(data), next(nullptr) {}
+};
+
+class linkedlist
+{
+public:
+    node *head{};
+    int length = 0;
+
+    int getlength()
+    {
+        return length;
+    }
+    void insertfront(int value)
+    {
+        node *items = new node(value);
+        items->next = head;
+        head = items;
+        length++;
+    }
+    void insertend(int n)
+    {
+        node *item = new node(n);
+        if (!head)
+        {
+            head = item;
+        }
+        else
+        {
+            node *current = head;
+            while (current->next)
+            {
+                current = current->next;
+            }
+            current->next = item;
+        }
+        length++;
+    }
+
+    void addafter(int val, int pos)
+    {
+        node *current = head;
+        for (int i = 0; i < pos - 1; i++)
+        {
+            if (current == nullptr)
+            {
+                cout << "no elements at the position" << endl;
+                return;
+            }
+            current = current->next;
+        }
+        node *item = new node(val);
+        item->next = current->next;
+        current->next = item;
+        length++;
+    }
+
+
+    int isempty()
+    {
+        return head == nullptr;
+    }
+
+    int removefirst()
+    {
+        if (isempty())
+        {
+            cout << "list is empty\n";
+            return 0;
+        }
+        node *temp = head;
+        int d = temp->data;
+        head = head->next;
+        delete temp;
+        length--;
+        return d;
+    }
+
+    void removelast()
+    {
+        if (isempty())
+        {
+            cout << "List is empty\n";
+        }
+        else if (head->next == nullptr)
+        {
+            removefirst();
+        }
+        else
+        {
+            node *current = head;
+            node *previous = nullptr;
+
+            while (current->next != nullptr)
+            {
+                previous = current;
+                current = current->next;
+            }
+            delete current;
+            previous->next = nullptr;
+            length--;
+        }
+    }
+    void print()
+    {
+        for (node *f = head; f; f = f->next)
+        {
+            cout << f->data << " ";
+        }
+        cout << endl;
+    }
+
+    ~linkedlist()
+    {
+        node *first = head;
+        while (first != nullptr)
+        {
+            node *last = first->next;
+            delete first;
+            first = last;
+        }
+        head = nullptr;
+    }
+};
+class queue{
+private :
+linkedlist list;
+public:
+bool is_empty()
+{
+return list.getlength()==0;
+}
+void enqueue(int val)
+{
+    list.insertend(val);
+}
+int dequeue ()
+{
+   return list.removefirst();
+}
+void print()
+{
+    list.print();
+}
+};
+int main()
+{
+    queue q;
+    q.enqueue(10);
+    q.enqueue(20);
+    q.enqueue(30);
+    cout << "Queue: ";
+    q.print();
+    cout << "Dequeued: " << q.dequeue() << endl;
+    cout << "Updated Queue: ";
+    q.print();
+    cout << "Is the queue empty? " << (q.is_empty() ? "Yes" : "No") << endl;
+
+    return 0;
+}
