@@ -1,0 +1,72 @@
+include<iostream>
+#define maxsize 100
+using namespace std;
+
+class stack {
+private:
+    int top;
+    int arr[maxsize];
+    //int maxsize;
+    //int *arr =  new int [maxsize];
+
+public:
+stack()
+{
+    top==-1;
+    
+}
+/*
+stack(int s)
+{
+    top-1;
+    maxsize =s;
+}
+*/
+    bool isempty() {
+        return (top == -1);
+    }
+
+    bool isfull() {
+        return (top == maxsize - 1);
+    }
+
+    void push(int val) {
+        if (isfull()) {
+            cout << "stack is full\n";
+            return;
+        }
+        arr[++top] = val;
+    }
+
+    int pop() {
+        if (isempty()) 
+        {
+            cout << "stack is underflow\n";
+            return 0;
+        }
+        int x = arr[top];
+        top--;
+        return x;
+    }
+
+    void display() {
+        if (isempty()) {
+            cout << "stack is empty";
+        }
+        for (int i = 0; i <= top; i++) {
+            cout << arr[i] << " ";
+        }
+        cout << endl;
+    }
+};
+int main() 
+{
+    stack s;
+    s.push(1);
+    s.push(2);
+    s.push(3);
+    s.display();
+    cout << "Popped element: " << s.pop() << endl;
+    s.display();
+    return 0;
+}
