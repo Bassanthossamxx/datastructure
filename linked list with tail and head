@@ -1,0 +1,271 @@
+#include <iostream>
+using namespace std;
+
+struct node
+{
+    int data;
+    node *next;
+    node(int data) : data(data), next(nullptr) {}
+};
+
+class linkedlist
+{
+public:
+    node *head{};
+    node *tail{};
+    int length = 0;
+    void insertend(int n)
+    {
+        node *item = new node(n);
+        if (!head)
+        {
+            head = tail = item;
+        }
+        else
+        {
+            tail->next = item;
+            tail = item;
+        }
+        length++;
+    }
+
+    void removelast()
+    {
+        if (length <= 1)
+        {
+            removefront();
+        }
+        else
+        {
+            node *current = head;
+            node *previous = nullptr;
+
+            while (current->next) // while current next doesnot equal nullptr
+            {
+                previous = current;
+                current = current->next;
+            }
+
+            delete current;
+            if (previous)
+            {
+                previous->next = nullptr;
+                tail = previous;
+            }
+            else
+            {
+                head = tail = nullptr;
+            }
+
+            length--;
+        }
+    }
+    void remove(int position)
+    {
+        if (position <= 0 || position > length)
+        {
+            cout << "Error: Invalid position" << endl;
+            return;
+        }
+
+        if (position == 1)
+        {
+            removefront();
+        }
+        else if (position == length)
+        {
+            removelast();
+        }
+        else
+        {
+            node *current = head;
+            node *previous = nullptr;
+
+            // Move to the node at the specified position
+            for (int i = 1; i < position; ++i)
+            {
+                previous = current;
+                current = current->next;
+            }
+
+            if (current)
+            {
+                previous->next = current->next;
+                delete current;
+                length--;
+            }
+            else
+            {
+                cout << "Error: Could not get the node at position " << position << endl;
+            }
+        }
+    }
+
+    void insertfront(int value)
+    {
+        node *items = new node(value);
+        if (!head)
+        {
+            head = tail = items;
+        }
+        else
+        {
+            items->next = head;
+            head = items;
+        }
+        length++;
+    }
+
+    void removefront()
+    {
+        if (!head)
+        {
+            cout << "is empty!!" << endl;
+            tail = nullptr;
+        }
+        else
+        {
+            node *temp = head;
+            head = head->next;
+            delete temp;
+            length--;
+
+            // If the list becomes empty after removal, update the tail
+            if (!head)
+            {
+                tail = nullptr;
+            }
+        }
+    }
+    void reverse()
+    {
+        node *current = head;
+        node *prev = nullptr;
+        node *next = nullptr;
+
+        while (current != nullptr)
+        {
+            next = current->next;
+            current->next = prev;
+            prev = current;
+            current = next;
+        }
+
+        // After the loop, 'prev' becomes the new head
+        head = prev;
+
+        // Update the tail to the original head (now the last node)
+        tail = current;
+
+        // Note: 'current' is nullptr at this point
+    }
+    int getlength()
+    {
+        return length;
+    }
+
+    node *get_nth(int n)
+    {
+        int cnt = 0;
+        for (node *cur = head; cur; cur = cur->next)
+            if (++cnt == n)
+                return cur;
+
+        return nullptr;
+    }
+
+    int get_nthback(int v)
+    {
+        int co = length + 1;
+        for (node *c = head; c; c = c->next)
+        {
+            co--;
+            if (co == v)
+            {
+                return c->data;
+            }
+        }
+        return 0;
+    }
+
+    int search(int num)
+    {
+        int ind = 0;
+        for (node *fi = head; fi; fi = fi->next, ind++)
+        {
+            if (fi->data == num)
+            {
+                return ind;
+            }
+        }
+        return -1;
+    }
+
+    void print()
+    {
+        for (node *f = head; f; f = f->next)
+        {
+            cout << f->data << " ";
+        }
+        cout << endl;
+    }
+
+    ~linkedlist()
+    {
+        node *first = head;
+        while (first != nullptr)
+        {
+            node *last = first->next;
+            delete first;
+            first = last;
+        }
+        head = tail = nullptr;
+    }
+};
+
+int thesame(linkedlist l1, linkedlist l2)
+{
+    node *f1 = l1.head;
+    node *f2 = l2.head;
+    while (f1 != nullptr && f2 != nullptr)
+    {
+        if (f1->data != f2->data)
+        {
+            return 0;
+        }
+        f1 = f1->next;
+        f2 = f2->next;
+    }
+    if (f1 != nullptr || f2 != nullptr)
+        return 0;
+    return 1;
+}
+
+int main()
+{
+    linkedlist list;
+    list.insertfront(9);
+    list.insertend(6);
+    list.insertfront(5);
+    list.insertend(10);
+    list.insertfront(1);
+
+    cout << "before" << endl;
+    list.print();
+    list.remove(2);
+    list.removefront();
+    list.removelast();
+    cout << "after" << endl;
+    list.print();
+    cout << "before reverse" << endl;
+    list.print();
+    list.reverse();
+    cout << "after reverse" << endl;
+    list.print();
+    cout << "get number 2 from start: " << list.get_nth(2)->data << endl;
+    cout << "get number 2 from end: " << list.get_nthback(2) << endl;
+    cout << "index of 10 :" << list.search(10) << endl;
+    cout << "index of 9 : " << list.search(9) << endl;
+    cout << "length of list : " << list.getlength() << endl;
+    return 0;
+}
