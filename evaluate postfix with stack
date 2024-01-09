@@ -1,0 +1,80 @@
+#include <iostream>
+#include <string>
+#define MAX_SIZE 1000
+using namespace std;
+
+class stack {
+private:
+	int top;
+	int items[MAX_SIZE];
+public:
+	stack() { top = -1; }
+	int is_empty();
+	int is_full();
+	void push(int x);
+	int pop();
+};
+
+int stack::is_empty() {
+	if (top == -1)
+		return 1;
+	return 0;
+}
+
+int stack::is_full() {
+	if (top == MAX_SIZE - 1)
+		return 1;
+	return 0;
+}
+
+void stack::push(int x) {
+	if (is_full()) {
+		cout << "Stack overflow" << endl;
+		return;
+	}
+	top++;
+	items[top] = x;
+}
+
+int stack::pop() {
+	if (is_empty()) {
+		cout << "Stack underflow" << endl;
+		return -1;
+	}
+	int x = items[top];
+	top--;
+	return x;
+}
+
+int eval_postfix(string postfix) {
+	stack s;
+	for (int i = 0; i < postfix.length(); i++) {
+		char ch = postfix[i];
+		if (isdigit(ch)) {
+			s.push(ch - '0');
+		}
+		else {
+			int op2 = s.pop();
+			int op1 = s.pop();
+			int result;
+			if (ch == '+')
+				result = op1 + op2;
+			else if (ch == '-')
+				result = op1 - op2;
+			else if (ch == '*')
+				result = op1 * op2;
+			else if (ch == '/')
+				result = op1 / op2;
+			s.push(result);
+		}// end else
+	}// end for
+	return s.pop();
+}
+
+int main() {
+	cout << "Enter a postfix expression: ";
+	string postfix;
+	cin >> postfix;
+	int result = eval_postfix(postfix);
+	cout << "Result = " << result << endl;
+}
