@@ -1,0 +1,46 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+// Define a struct to represent a person
+struct Person {
+    string name;
+    int age;
+    double height;
+
+    // Constructor to initialize the struct
+    Person(string n, int a, double h) : name(n), age(a), height(h) {}
+
+    // Function to display information about the person
+    void displayInfo() {
+        cout << "Name: " << name << endl;
+        cout << "Age: " << age << " years" << endl;
+        cout << "Height: " << height << " meters" << endl;
+    }
+
+    // Function to wish the person a happy birthday
+    void celebrateBirthday() {
+        cout << "Happy Birthday, " << name << "!" << endl;
+        age++;
+        cout << "You are now " << age << " years old." << endl;
+    }
+};
+
+int main() {
+    // Create an instance of the Person struct
+    Person person1("John Doe", 25, 1.75);
+
+    // Display information about the person
+    cout << "Original Information:\n";
+    person1.displayInfo();
+
+    // Celebrate the person's birthday
+    person1.celebrateBirthday();
+
+    // Display updated information after the birthday
+    cout << "\nUpdated Information:\n";
+    person1.displayInfo();
+
+    return 0;
+}
