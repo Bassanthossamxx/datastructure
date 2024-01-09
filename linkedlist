@@ -1,0 +1,213 @@
+#include <iostream>
+using namespace std;
+
+struct node
+{
+    int data;
+    node *next;
+    node(int data) : data(data), next(nullptr) {}
+};
+
+class linkedlist
+{
+public:
+    node *head{};
+    int length = 0;
+
+    linkedlist() : head(nullptr), length(0) {}
+
+    node *create_node(int value)
+    {
+        node *p = new node(value);
+        return p;
+    }
+
+    void free_node(node *p)
+    {
+        delete p;
+    }
+
+    int getlength()
+    {
+        return length;
+    }
+
+    void insertfront(int value)
+    {
+        node *items = create_node(value);
+        items->next = head;
+        head = items;
+        length++;
+    }
+
+    void insertend(int n)
+    {
+        node *item = create_node(n);
+        if (!head)
+        {
+            head = item;
+        }
+        else
+        {
+            node *current = head;
+            while (current->next)
+            {
+                current = current->next;
+            }
+            current->next = item;
+        }
+        length++;
+    }
+
+    void addafter(int val, int pos)
+    {
+        node *current = head;
+        for (int i = 0; i < pos - 1; i++)
+        {
+            if (current == nullptr)
+            {
+                cout << "no elements at the position" << endl;
+                return;
+            }
+            current = current->next;
+        }
+        node *item = create_node(val);
+        item->next = current->next;
+        current->next = item;
+        length++;
+    }
+
+    int isempty()
+    {
+        return head == nullptr;
+    }
+
+    int removefirst()
+    {
+        if (isempty())
+        {
+            cout << "list is empty\n";
+            return 0;
+        }
+        node *temp = head;
+        int d = temp->data;
+        head = head->next;
+        free_node(temp);
+        length--;
+        return d;
+    }
+
+    void removelast()
+    {
+        if (isempty())
+        {
+            cout << "List is empty\n";
+        }
+        else if (head->next == nullptr)
+        {
+            removefirst();
+        }
+        else
+        {
+            node *current = head;
+            node *previous = nullptr;
+
+            while (current->next != nullptr)
+            {
+                previous = current;
+                current = current->next;
+            }
+            free_node(current);
+            previous->next = nullptr;
+            length--;
+        }
+    }
+
+    void reverse()
+    {
+        node *current = head;
+        node *prev = nullptr;
+        node *next = nullptr;
+
+        while (current != nullptr)
+        {
+            next = current->next;
+            current->next = prev;
+            prev = current;
+            current = next;
+        }
+
+        head = prev;
+    }
+
+    int count()
+    {
+        int count = 0;
+        node *current = head;
+
+        while (current != nullptr)
+        {
+            count++;
+            current = current->next;
+        }
+
+        return count;
+    }
+
+    void print()
+    {
+        for (node *f = head; f; f = f->next)
+        {
+            cout << f->data << " ";
+        }
+        cout << endl;
+    }
+
+    ~linkedlist()
+    {
+        node *first = head;
+        while (first != nullptr)
+        {
+            node *last = first->next;
+            free_node(first);
+            first = last;
+        }
+        head = nullptr;
+    }
+     int search(int num)
+    {
+        int ind = 0;
+        node *first = head;
+        while (first)
+        {
+            if (first->data == num)
+            {
+                return ind;
+            }
+            first = first->next;
+            ind++;
+        }
+        return -1;
+    }
+};
+
+int main()
+{
+    linkedlist list;
+    list.insertfront(1);
+    list.insertend(2);
+    list.insertend(4);
+    list.insertend(5);
+    list.addafter(3, 2);
+    cout << "Original List: ";
+    list.print();
+    list.reverse();
+    list.print();
+    list.removelast();
+    list.removefirst();
+    list.print();
+cout <<"index of number 4 in linked list :" <<list.search(4);
+    cout << "Length: " << list.count() << endl;
+
+    return 0;
+}
